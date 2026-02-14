@@ -1,101 +1,158 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { getAllPosts } from '@/lib/posts';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const posts = getAllPosts();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="space-y-12">
+      {/* Hero Section */}
+      <section className="border-b border-retro-gray pb-8">
+        <div className="font-mono space-y-4">
+          <div className="text-retro-muted text-sm">
+            <span className="text-retro-cyan">const</span>
+            <span className="text-white"> blog </span>
+            <span className="text-retro-cyan">=</span>
+            <span className="text-retro-magenta"> {'{'} </span>
+          </div>
+          
+          <h1 className="text-4xl md:text-5xl font-bold text-white pl-4">
+            Thoughts, ideas, <br />
+            <span className="text-gradient">and code snippets</span>
+          </h1>
+          
+          <div className="text-retro-muted text-sm">
+            <span className="text-retro-magenta">{'}'}</span>
+            <span className="text-white">;</span>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        
+        <p className="mt-6 text-retro-muted max-w-2xl leading-relaxed">
+          A collection of writings about software engineering, technology, 
+          and the occasional random thought. Written in markdown, built with code.
+        </p>
+      </section>
+
+      {/* Blog Posts List */}
+      <section>
+        <div className="flex items-center gap-4 mb-8">
+          <h2 className="font-mono text-lg text-retro-cyan">
+            <span className="text-retro-muted">$</span> ls -la posts/
+          </h2>
+          <div className="flex-1 h-px bg-retro-gray"></div>
+        </div>
+
+        {posts.length === 0 ? (
+          <div className="font-mono text-retro-muted py-12 text-center border border-dashed border-retro-gray rounded-lg">
+            <p className="text-retro-magenta mb-2">No posts found</p>
+            <p className="text-sm">Add .md files to content/posts/ to get started</p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {posts.map((post, index) => (
+              <article 
+                key={post.slug}
+                className="group border border-retro-gray rounded-lg p-6 hover:border-retro-cyan/50 transition-all duration-300 hover:glow-border"
+              >
+                <Link href={`/posts/${post.slug}`} className="block">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="font-mono text-xs text-retro-muted">
+                          [{String(index + 1).padStart(2, '0')}]
+                        </span>
+                        <h3 className="font-mono text-xl font-semibold text-white group-hover:text-retro-cyan transition-colors">
+                          {post.title}
+                        </h3>
+                      </div>
+                      
+                      <p className="text-retro-muted text-sm mb-3 line-clamp-2 pl-8">
+                        {post.excerpt}
+                      </p>
+                      
+                      <div className="flex items-center gap-4 pl-8">
+                        <span className="font-mono text-xs text-retro-blue">
+                          {new Date(post.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          })}
+                        </span>
+                        
+                        <span className="font-mono text-xs text-retro-muted">
+                          {post.readingTime} min read
+                        </span>
+                        
+                        {post.tags.length > 0 && (
+                          <div className="flex items-center gap-2">
+                            {post.tags.map((tag) => (
+                              <span 
+                                key={tag}
+                                className="font-mono text-xs px-2 py-0.5 bg-retro-gray rounded text-retro-cyan"
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="text-retro-muted group-hover:text-retro-cyan transition-colors">
+                      <svg 
+                        className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          strokeWidth={2} 
+                          d="M9 5l7 7-7 7" 
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </Link>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Stats Section */}
+      <section className="border-t border-retro-gray pt-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="border border-retro-gray rounded p-4 text-center">
+            <div className="font-mono text-2xl font-bold text-retro-cyan">
+              {posts.length}
+            </div>
+            <div className="font-mono text-xs text-retro-muted mt-1">posts</div>
+          </div>
+          
+          <div className="border border-retro-gray rounded p-4 text-center">
+            <div className="font-mono text-2xl font-bold text-retro-magenta">
+              {posts.reduce((acc, post) => acc + post.readingTime, 0)}
+            </div>
+            <div className="font-mono text-xs text-retro-muted mt-1">min read</div>
+          </div>
+          
+          <div className="border border-retro-gray rounded p-4 text-center">
+            <div className="font-mono text-2xl font-bold text-retro-blue">
+              {new Set(posts.flatMap(p => p.tags)).size}
+            </div>
+            <div className="font-mono text-xs text-retro-muted mt-1">tags</div>
+          </div>
+          
+          <div className="border border-retro-gray rounded p-4 text-center">
+            <div className="font-mono text-2xl font-bold text-retro-yellow">
+              ∞
+            </div>
+            <div className="font-mono text-xs text-retro-muted mt-1">ideas</div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
